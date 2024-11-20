@@ -1,5 +1,5 @@
 _schema-version: "2.1"
-ID: HANA_Cluster_Table_Function_Calc_View
+ID: CalcViewClustering
 version: 0.0.1
 modules:
 - name: db
