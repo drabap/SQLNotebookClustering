@@ -1,0 +1,8 @@
+{
+  "PAL_KMEANS": {
+    "target": {
+      "object": "PAL_KMEANS",
+      "schema": "_SYS_AFL"
+    }
+  }
+}

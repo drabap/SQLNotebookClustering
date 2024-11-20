@@ -1,0 +1,94 @@
+FUNCTION "TBL_FUN_CLUSTER_CUSTOMER_TAB_INPUT"( in
+   it_data table(
+    "CUSTOMERID" INTEGER ,
+	 "CREDITSCORE" INTEGER ,
+	 "GEOGRAPHY" NVARCHAR(100) ,
+	 "GENDER" NVARCHAR(10) ,
+	 "AGE" INTEGER ,
+	 "TENURE" INTEGER ,
+	 "BALANCE" DOUBLE  ,
+	 "NUMOFPRODUCTS" INTEGER  ,
+	 "HASCRCARD" INTEGER  ,
+	 "ISACTIVEMEMBER" INTEGER ,
+	 "ESTIMATEDSALARY" DOUBLE )
+)
+RETURNS TABLE ( customerid integer, cluster_id integer, distance double )
+       LANGUAGE SQLSCRIPT 
+       SQL SECURITY INVOKER AS 
+BEGIN 
+
+    declare lt_parameter_tbl table(
+        NAME VARCHAR (50),
+        INT_VALUE INTEGER,
+        DOUBLE_VALUE DOUBLE,
+        STRING_VALUE VARCHAR (100));
+        
+
+declare lt_assignment table(
+"CUSTOMERID" integer,
+"CLUSTER_ID" integer,
+"DISTANCE" double,
+"SLIGHT_SILHOUETTE" double
+);
+
+declare lt_centers table(
+"CLUSTER_ID" integer,
+"CREDITSCORE" double,
+"GEOGRAPHY" varchar(100),
+"GENDER" varchar(10),
+"AGE" double,
+"TENURE" DOUBLE,
+"BALANCE" double,
+"NUMOFPRODUCTS" double,
+"HASCRCARD" double,
+"ISACTIVEMEMBER" double,
+"ESTIMATEDSALARY" double
+);
+
+
+declare lt_model table(
+    row_index integer,
+    model_content varchar(5000)
+ );
+
+ declare lt_stat table(
+    stat_name varchar(100),
+    stat_value varchar(100)
+ );
+
+ declare lt_place table(
+    param_name nvarchar(256),
+    int_value integer,
+    double_value double,
+    string_value nvarchar(1000)
+ );
+        
+INSERT INTO :lt_parameter_tbl VALUES ('THREAD_RATIO', NULL, 0.2, NULL);
+INSERT INTO :lt_parameter_tbl VALUES ('GROUP_NUMBER', 5, NULL, NULL);
+INSERT INTO :lt_parameter_tbl VALUES ('INIT_TYPE', 1, NULL, NULL);
+INSERT INTO :lt_parameter_tbl VALUES ('DISTANCE_LEVEL',2, NULL, NULL);
+INSERT INTO :lt_parameter_tbl VALUES ('MAX_ITERATION', 100, NULL, NULL);
+INSERT INTO :lt_parameter_tbl VALUES ('EXIT_THRESHOLD', NULL, 1.0E-6, NULL);
+INSERT INTO :lt_parameter_tbl VALUES ('CATEGORY_WEIGHTS', NULL, 0.5, NULL);        
+
+--select * from :lt_parameter_tbl;
+
+lt_data_tbl = SELECT CUSTOMERID,
+CREDITSCORE,
+GEOGRAPHY,
+GENDER,
+AGE,
+TENURE,
+BALANCE,
+NUMOFPRODUCTS,
+HASCRCARD,
+ISACTIVEMEMBER,
+ESTIMATEDSALARY
+--EXITED
+FROM CHURN WHERE BALANCE > 0;
+
+CALL PAL_KMEANS(:lt_data_tbl, :lt_parameter_tbl, lt_assignment, lt_centers, lt_model, lt_stat, lt_place);
+
+return select customerid, cluster_id, distance from :lt_assignment;    
+
+END;

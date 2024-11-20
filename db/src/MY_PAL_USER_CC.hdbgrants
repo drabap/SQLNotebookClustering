@@ -1,0 +1,33 @@
+{
+	"MY_PAL_SERVICE": {
+		"application_user": {
+			"global_roles": [
+				{
+					"roles": [
+						"AFL__SYS_AFL_AFLPAL_EXECUTE"
+					]
+				}
+			],
+			"schema_privileges": [
+				{
+					"privileges": [
+						"SELECT",
+						"INSERT",
+						"UPDATE",
+						"DELETE",
+						"EXECUTE"
+					]
+				}
+			]
+		},
+		"object_owner": {
+			"global_roles": [
+				{
+					"roles": [
+						"AFL__SYS_AFL_AFLPAL_EXECUTE"
+					]
+				}
+			]
+		}
+	}
+}
