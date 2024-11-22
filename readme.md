@@ -23,30 +23,70 @@ The following tutorials and links on SAP developers are a good starting point fo
 ## Import project to Business Application Studio
 Open BAS. On the tab "Simplified Git", click on "Clone Repository" and enter the url of this GitHub repository: https://github.com/drabap/CalcViewClustering.
 
-![](BAS_CloneRepository.png)
+![](BAS_Clone_Repository.png)
 
 You are asked, if you want to add the repository to your current workspace. Click on "Add to current workspace" or "Open" and return to the Project explorer.
+
+![](BAS_Add_Workspace.png)
 
 The project should look like this:
 
 ![](BAS_Project.png)
 
-Before deploying the project you have to add two services to the project
+Next we bind the relevant services.
+
+## Preparation - Binding target container and user-provided service
+
+Before deploying the project you have to add two services to the project:
 
 - An HDI container as a deployment target
-- A user-provided service "MY_PAL_SERVICE" for accessing the PAL procedures of SAP HANA's AFL.
+- An user-provided service "MY_PAL_SERVICE" for accessing the PAL procedures of SAP HANA's AFL.
 
 First let us look at creating the HDI container as deployment target.
-## Create HDI target container for deployment
 
-Click on "Add service" and select "Create HDI container":
+### Bind HDI target container for deployment
+
+In Explorer open the register "SAP HANA Projects":
+
+![](BAS_SAPHANAProjects.png)
+
+Next to "hdi_db" click on bind.
+
+![](BAS_HDI_Bind_HDIDB.png)
+
+You are asked to login to Cloud Foundry.
+
+Choose "Bind to an HDI container" in the next dialog:
+
+![](BAS_HDI_Bind_HDIContainer_2.png)
+
+Select "Create a new service instance" in the next prompt :
+
+![](BAS_HDI_Bind_CreateServiceInstance.png)
+
+Enter a unique name for the new container.
+
+The new container is being created:
+
+![](BAS_HDI_Bind_HDIContainer_Creation.png)
+
+After succesful creation, a .env file is created:
+
+![](BAS_HDI_Bind_HDIContainer_EnvFile.png)
+
+![](BAS_HDI_EnvFile.png)
+
+After successful binding, the register "SAP HANA Projects" should show the binding to the new container:
+
+![](BAS_SAPHANAProjects_BoundContainer.png)
 
 Note: When creating a SAP HANA project from scratch such an HDI container is automatically created during first deployment.
 
-Before deploying this project, you need to add the user provided service as it is described in the next section.
 
-## Preparation - Providing a user provided service
-In order to access the machine learning procedures of PAL inside SQLScript design-time objects like table functions, you have to provide an *external services* with sufficient permissions for the execution of PAL procedure.
+Next, we have to bind the user-provided service MY_PAL_SERVICE for accessing the PAL procedures.
+
+### Providing a user provided service
+In order to access the machine learning procedures of PAL inside SQLScript design-time objects like table functions or procedures, you have to provide an *external services* with sufficient permissions for the execution of PAL procedure.
 First, you create a technical user (see below) and then you add an external services based on this technical user to the HDI container (see below). 
 
 
@@ -69,9 +109,9 @@ GRANT afl__sys_afl_aflpal_execute to MY_PAL_USER_CC WITH ADMIN OPTION
 Note: During deployment the user MY_PAL_USER_CC will grant this role to the object owner of the HDI container. Thats why you need the *ADMIN OPTION* here.
 
 ### Add user provided service
-In BAS go to tab "SAP HANA Projects" -> Database Connections and select "Add":
+Again in tab "SAP HANA Projects", click on add next to Database Connections:
 
-![](BAS_Add_UserProvidedService.png)
+![](BAS_DB_AddConnection.png)
 
 Select "Creater user-provided service instance". As Service name enter 'MY_PAL_SERVICE'.
 In the field "Enter user name" enter the name of the technical database user that you just created:
@@ -80,22 +120,22 @@ In the field "Enter user name" enter the name of the technical database user tha
 
 Dont check the box "Generate hdbgrants file" as the GitHub projects supplies already the hdbgrant file "MY_PAL_SERVICE.hdbgrants" that defines which permissions are granted via service MY_PAL_SERVICE.
 
+A new service "cross-container-service-1" appears which is bound to the user-provided service MY_PAL_SERVICE:
 
-
-
+![](BAS_DB_CrossContainerService1.png)
 
 ## Deployment and experimenting with calculation views
 Now you can deploy the SAP HANA project.
 
 ![](Deploy_Project.png)
 
-Execute the table function from SQL console:
+After successful deployment, you can open the HDI container:
 
 In the tab "SAP HANA Projects" click on "Open Database Container" next to your project:
 
 ![](BAS_OpenHDIContainer.png)
 
-Open an SQL Console in the HDI container and paste the following code:
+Open an SQL Console in the HDI container and paste the following code to execute the table function for the cluster analysis:
 
 ```sql
 DO
@@ -132,6 +172,9 @@ You are prompted to supply input parameters *I_GROUP_NUMBER* and *I_NORMALIZATIO
 The cluster logic is executed and the result is shown:
 ![](DB_CalcView_ClusterResult.png)
 
+In Analysis tab you can count customer by cluster:
+
+![](DB_Explorer_Analysis.png)
 ## Additional information
 
 Supplied are some additional information.
