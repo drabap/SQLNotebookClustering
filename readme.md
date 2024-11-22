@@ -23,9 +23,9 @@ The following tutorials and links on SAP developers are a good starting point fo
 ## Import project to Business Application Studio
 Open BAS. On the tab "Simplified Git", click on "Clone Repository" and enter the url of this GitHub repository: https://github.com/drabap/CalcViewClustering.
 
-![](BAS_Github_CloneRepository.png)
+![](BAS_CloneRepository.png)
 
-You are asked, if you want to add the repository to your current workspace. Click on "Add to current workspace" and return to the Project explorer.
+You are asked, if you want to add the repository to your current workspace. Click on "Add to current workspace" or "Open" and return to the Project explorer.
 
 The project should look like this:
 
