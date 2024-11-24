@@ -27,11 +27,11 @@ Open BAS. On the tab "Simplified Git", click on "Clone Repository" and enter the
 
 You are asked, if you want to add the repository to your current workspace. Click on "Add to current workspace" or "Open" and return to the Project explorer.
 
-![](BAS_Add_Workspace.png)
+![](./images/BAS_Add_Workspace.png)
 
 The project should look like this:
 
-![](BAS_Project.png)
+![](./images/BAS_Project.png)
 
 Next we bind the relevant services.
 
@@ -48,37 +48,37 @@ First let us look at creating the HDI container as deployment target.
 
 In Explorer open the register "SAP HANA Projects":
 
-![](BAS_SAPHANAProjects.png)
+![](./images/BAS_SAPHANAProjects.png)
 
 Next to "hdi_db" click on bind.
 
-![](BAS_HDI_Bind_HDIDB.png)
+![](./images/BAS_HDI_Bind_HDIDB.png)
 
 You are asked to login to Cloud Foundry.
 
 Choose "Bind to an HDI container" in the next dialog:
 
-![](BAS_HDI_Bind_HDIContainer_2.png)
+![](./images/BAS_HDI_Bind_HDIContainer_2.png)
 
 Select "Create a new service instance" in the next prompt :
 
-![](BAS_HDI_Bind_CreateServiceInstance.png)
+![](./images/BAS_HDI_Bind_CreateServiceInstance.png)
 
 Enter a unique name for the new container.
 
 The new container is being created:
 
-![](BAS_HDI_Bind_HDIContainer_Creation.png)
+![](./images/BAS_HDI_Bind_HDIContainer_Creation.png)
 
 After succesful creation, a .env file is created:
 
-![](BAS_HDI_Bind_HDIContainer_EnvFile.png)
+![](./images/BAS_HDI_Bind_HDIContainer_EnvFile.png)
 
-![](BAS_HDI_EnvFile.png)
+![](./images/BAS_HDI_EnvFile.png)
 
 After successful binding, the register "SAP HANA Projects" should show the binding to the new container:
 
-![](BAS_SAPHANAProjects_BoundContainer.png)
+![](./images/BAS_SAPHANAProjects_BoundContainer.png)
 
 Note: When creating a SAP HANA project from scratch such an HDI container is automatically created during first deployment.
 
@@ -111,29 +111,29 @@ Note: During deployment the user MY_PAL_USER_CC will grant this role to the obje
 ### Add user provided service
 Again in tab "SAP HANA Projects", click on add next to Database Connections:
 
-![](BAS_DB_AddConnection.png)
+![](./images/BAS_DB_AddConnection.png)
 
 Select "Creater user-provided service instance". As Service name enter 'MY_PAL_SERVICE'.
 In the field "Enter user name" enter the name of the technical database user that you just created:
 
-![](BAS_Add_UserProvidedService_Dialog.png)
+![](./images/BAS_Add_UserProvidedService_Dialog.png)
 
 Dont check the box "Generate hdbgrants file" as the GitHub projects supplies already the hdbgrant file "MY_PAL_SERVICE.hdbgrants" that defines which permissions are granted via service MY_PAL_SERVICE.
 
 A new service "cross-container-service-1" appears which is bound to the user-provided service MY_PAL_SERVICE:
 
-![](BAS_DB_CrossContainerService1.png)
+![](./images/BAS_DB_CrossContainerService1.png)
 
 ## Deployment and experimenting with calculation views
 Now you can deploy the SAP HANA project.
 
-![](Deploy_Project.png)
+![](./images/Deploy_Project.png)
 
 After successful deployment, you can open the HDI container:
 
 In the tab "SAP HANA Projects" click on "Open Database Container" next to your project:
 
-![](BAS_OpenHDIContainer.png)
+![](./images/BAS_OpenHDIContainer.png)
 
 Open an SQL Console in the HDI container and paste the following code to execute the table function for the cluster analysis:
 
@@ -161,20 +161,20 @@ END;
 ```
 Result:
 
-![](DB_Explorer_ResultCluster.png)
+![](./images/DB_Explorer_ResultCluster.png)
 
 Open Calculation View base: 
 Under the register 'Column Views' open view *cv_d_churn_cluster_tab_function_base* and click "Open Data":
 You are prompted to supply input parameters *I_GROUP_NUMBER* and *I_NORMALIZATION*. Keep the default values and click on "Open content":
 
-![](DB_CalcView_DataPreview.png)
+![](./images/DB_CalcView_DataPreview.png)
 
 The cluster logic is executed and the result is shown:
-![](DB_CalcView_ClusterResult.png)
+![](./images/DB_CalcView_ClusterResult.png)
 
 In Analysis tab you can count customer by cluster:
 
-![](DB_Explorer_Analysis.png)
+![](./images/DB_Explorer_Analysis.png)
 ## Additional information
 
 Supplied are some additional information.
