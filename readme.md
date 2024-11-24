@@ -1,13 +1,29 @@
 # About this Github Repository
 
 This Github repository contains a SAP HANA database project that illustrates the usage of machine learning logic in Calculation Views. The project can be imported in SAP Business Application Studio. The project contains a table function that implements the K-Means Cluster procedure from PAL (Predictive Analysis Library) and a Calculation View that calls the table functions. This Calculation View can be integrated into stacked Calculation Views allowing to analyze and visualize the resulting cluster analysis.
-As this project uses the HDI (HANA deployment infrastructure) some preparation for access of the procedures from PAL is required.
+As this project uses HDI (HANA deployment infrastructure) some preparations for access of the procedures of PAL inside the HDI container are required.
+
+<!-- Start Document Outline -->
+
+* [Prerequisites](#prerequisites)
+* [Import project to Business Application Studio](#import-project-to-business-application-studio)
+* [Preparation - Binding target container and user-provided service](#preparation---binding-target-container-and-user-provided-service)
+	* [Bind HDI target container for deployment](#bind-hdi-target-container-for-deployment)
+	* [Create a user-provided service for PAL procedures](#create-a-user-provided-service-for-pal-procedures)
+		* [Create technical user](#create-technical-user)
+		* [Add user provided service](#add-user-provided-service)
+* [Deployment and experimenting with calculation views](#deployment-and-experimenting-with-calculation-views)
+* [Additional information](#additional-information)
+	* [Understanding the hdbgrant file](#understanding-the-hdbgrant-file)
+	* [Usage of PAL procedures using synonyms](#usage-of-pal-procedures-using-synonyms)
+
+<!-- End Document Outline -->
 
 ## Prerequisites
 This project was developed using Business Application Studio (BAS).
 It can be deployed to SAP HANA Cloud. Since BAS supports deployment to XSA also, it should be *in principal* possible to deploy it to an on-premise system. I am happy to hear from you if you experiment with deploying to on-premise systems.
 
-*Note*: The machine learning services of SAP HANA (PAL) are available on SAP BTP free tier or a productive account. There are *not* available in SAP BTP trial account.
+*Note*: The machine learning services of SAP HANA (PAL) are available on SAP BTP free tier or a productive account. 
 
 In your SAP BTP account you need the following services:
 
@@ -18,6 +34,9 @@ In your SAP BTP account you need the following services:
 
 The following tutorials and links on SAP developers are a good starting point for setting up your SAP HANA Cloud instance:
 
+- Create BTP free tier account: https://developers.sap.com/tutorials/btp-free-tier-account.html 
+- SAP HANA Cloud Free Tier: https://developers.sap.com/tutorials/hana-cloud-mission-trial-2-ft.html 
+- Provision an Instance of SAP HANA Cloud: https://developers.sap.com/tutorials/hana-cloud-mission-trial-3.html 
 
 
 ## Import project to Business Application Studio
@@ -85,12 +104,12 @@ Note: When creating a SAP HANA project from scratch such an HDI container is aut
 
 Next, we have to bind the user-provided service MY_PAL_SERVICE for accessing the PAL procedures.
 
-### Providing a user provided service
+### Create a user-provided service for PAL procedures
 In order to access the machine learning procedures of PAL inside SQLScript design-time objects like table functions or procedures, you have to provide an *external services* with sufficient permissions for the execution of PAL procedure.
 First, you create a technical user (see below) and then you add an external services based on this technical user to the HDI container (see below). 
 
 
-### Create technical user
+#### Create technical user
 First create a technical user called ``MY_PAL_USER_CC``. 
 Open a SQL console with user DBADMIN and execute the following statement replacing *\<PASSWORD\>* with a password of your choice:
 
@@ -99,8 +118,6 @@ CREATE USER MY_PAL_USER_CC PASSWORD <PASSWORD> NO FORCE_FIRST_PASSWORD_CHANGE;
 ALTER USER MY_PAL_USER_CC DISABLE PASSWORD LIFETIME;
 ```
 
-(Statement adapted from the blog: https://community.sap.com/t5/artificial-intelligence-and-machine-learning-blogs/hands-on-tutorial-machine-learning-with-sap-hana-cloud/ba-p/13683430).
-
 Next grant AFL__SYS_AFL_AFLPAL_EXECUTE to the technical user with admin option:
 
 ```sql
@@ -108,8 +125,8 @@ GRANT afl__sys_afl_aflpal_execute to MY_PAL_USER_CC WITH ADMIN OPTION
 ```
 Note: During deployment the user MY_PAL_USER_CC will grant this role to the object owner of the HDI container. Thats why you need the *ADMIN OPTION* here.
 
-### Add user provided service
-Again in tab "SAP HANA Projects", click on add next to Database Connections:
+#### Add user provided service
+Again in tab "SAP HANA Projects", click on "add" (plus sign) next to Database Connections:
 
 ![](./images/BAS_DB_AddConnection.png)
 
@@ -118,7 +135,7 @@ In the field "Enter user name" enter the name of the technical database user tha
 
 ![](./images/BAS_Add_UserProvidedService_Dialog.png)
 
-Dont check the box "Generate hdbgrants file" as the GitHub projects supplies already the hdbgrant file "MY_PAL_SERVICE.hdbgrants" that defines which permissions are granted via service MY_PAL_SERVICE.
+Dont check the box "Generate hdbgrants file" as the GitHub project supplies already the hdbgrant file "MY_PAL_SERVICE.hdbgrants" that defines which permissions are granted via service MY_PAL_SERVICE.
 
 A new service "cross-container-service-1" appears which is bound to the user-provided service MY_PAL_SERVICE:
 
@@ -181,11 +198,13 @@ Supplied are some additional information.
 
 ### Understanding the hdbgrant file
 
-Note: The file MY_PAL_SERVICE.hdbgrants controls which roles/privileges are granted to the object owner by the technical user MY_PAL_USER_CC during deployment. In the tab "object owner" you can see the role 'AFL_SYS_AFL_AFLPAL_EXECUTE':
+The file MY_PAL_USER_CC.hdbgrants controls which roles and privileges are granted to the object owner or application user, respectively, by the service MY_PAL_SERVICE through the technical user MY_PAL_USER_CC during deployment. In the tab "object owner" you can see the role 'AFL_SYS_AFL_AFLPAL_EXECUTE':
 
-You can open the hdbgrant file also with an text-editor:
-
+![](./images/BAS_GrantService.png)
 
 ### Usage of PAL procedures using synonyms
 
+To access procedures (or any other object) outside the HDI container, a reference must be provided via a synonym.
+In file pal.hdbsynonym the procedure for K-Means Clustering is provided:
 
+![](./images/BAS_HDB_Synonym.png)
