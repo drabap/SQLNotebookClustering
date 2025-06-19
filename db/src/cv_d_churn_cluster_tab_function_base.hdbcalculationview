@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" xmlns:Variable="http://www.sap.com/ndb/BiModelVariable.ecore" id="cv_d_churn_cluster_tab_function_base" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" xmlns:Variable="http://www.sap.com/ndb/BiModelVariable.ecore" id="cv_d_churn_cluster_tab_function_base" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" mdsCubeConversionExecution="AT_LOADING_TIME">
 <descriptions defaultDescription="cv_d_churn_cluster_tab_function_base.hdbcalculationview"/>
 <localVariables>
   <variable id="I_GROUP_NUMBER" parameter="true">
@@ -23,13 +23,7 @@
     <resourceUri>CHURN</resourceUri>
   </DataSource>
 </dataSources>
-<snapshotProcedures>
-  <query id="Query_1" generatedSnapshotView="I_cv_d_churn_cluster_tab_function_base_Query_1" createSnapshotAfterDeployment="true" doNotCleanUpBeforeDeployment="false" useDefinerMode="false">
-    <queryString>SELECT &quot;DISTANCE&quot; , &quot;CLUSTER_ID&quot; , &quot;CUSTOMERID&quot; , &quot;COL_GROUP_NUMBER&quot; , &quot;COL_NORMALIZATION&quot;  
-FROM  &quot;cv_d_churn_cluster_tab_function_base&quot;
-(placeholder.&quot;$$I_GROUP_NUMBER$$&quot;=&gt;5, placeholder.&quot;$$I_NORMALIZATION$$&quot;=&gt;0)</queryString>
-  </query>
-</snapshotProcedures>
+<snapshotProcedures/>
 <calculationViews>
   <calculationView xsi:type="Calculation:ProjectionView" id="P_CHURN">
     <viewAttributes>
