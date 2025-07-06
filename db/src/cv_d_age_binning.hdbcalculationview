@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_d_age_binning" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" mdsCubeConversionExecution="AT_LOADING_TIME">
+<descriptions defaultDescription="cv_d_age_binning"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="CHURN">
+    <resourceUri>CHURN</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_CUSTOMER">
+    <viewAttributes>
+      <viewAttribute id="AGE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="CHURN"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="A_REMOVE_DUPLICATE_AGE">
+    <viewAttributes>
+      <viewAttribute id="AGE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="P_CUSTOMER"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:WindowFunctionView" id="W_AGE_BIN">
+    <viewAttributes>
+      <viewAttribute id="AGE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="A_REMOVE_DUPLICATE_AGE">
+      <mapping xsi:type="Calculation:AttributeMapping" target="AGE" source="AGE"/>
+    </input>
+    <functions>
+      <function name="NTILE">
+        <arguments>
+          <argument>10</argument>
+        </arguments>
+        <resultColumn datatype="DOUBLE">AGE_BIN</resultColumn>
+      </function>
+    </functions>
+    <orderAttributes>
+      <orderAttribute direction="ASC">AGE</orderAttribute>
+    </orderAttributes>
+    <partitionAttributes/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:WindowFunctionView" id="W_AGE_MIN_MAX">
+    <viewAttributes>
+      <viewAttribute id="AGE"/>
+      <viewAttribute id="AGE_BIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="W_AGE_BIN">
+      <mapping xsi:type="Calculation:AttributeMapping" target="AGE" source="AGE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AGE_BIN" source="AGE_BIN"/>
+    </input>
+    <functions>
+      <function name="MIN">
+        <arguments>
+          <argument>&quot;AGE&quot;</argument>
+        </arguments>
+        <resultColumn datatype="INTEGER">AGE_MIN</resultColumn>
+      </function>
+      <function name="MAX">
+        <arguments>
+          <argument>&quot;AGE&quot;</argument>
+        </arguments>
+        <resultColumn datatype="INTEGER">AGE_MAX</resultColumn>
+      </function>
+    </functions>
+    <orderAttributes/>
+    <partitionAttributes>
+      <partitionAttribute>AGE_BIN</partitionAttribute>
+    </partitionAttributes>
+  </calculationView>
+</calculationViews>
+<logicalModel id="W_AGE_MIN_MAX">
+  <attributes>
+    <attribute id="AGE" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="AGE"/>
+      <keyMapping columnObjectName="W_AGE_MIN_MAX" columnName="AGE"/>
+    </attribute>
+    <attribute id="AGE_BIN" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="AGE_BIN"/>
+      <keyMapping columnObjectName="W_AGE_MIN_MAX" columnName="AGE_BIN"/>
+    </attribute>
+    <attribute id="AGE_MIN" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="AGE_MIN"/>
+      <keyMapping columnObjectName="W_AGE_MIN_MAX" columnName="AGE_MIN"/>
+    </attribute>
+    <attribute id="AGE_MAX" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="AGE_MAX"/>
+      <keyMapping columnObjectName="W_AGE_MIN_MAX" columnName="AGE_MAX"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="P_CUSTOMER" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="532"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="A_REMOVE_DUPLICATE_AGE" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="427"/>
+      <rectangleSize height="30" width="345"/>
+    </shape>
+    <shape expanded="true" modelObjectName="W_AGE_BIN" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="322"/>
+      <rectangleSize height="30" width="319"/>
+    </shape>
+    <shape expanded="true" modelObjectName="W_AGE_MIN_MAX" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="299"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

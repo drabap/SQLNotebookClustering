@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_d_cluster_result" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" mdsCubeConversionExecution="AT_LOADING_TIME">
+<descriptions defaultDescription="cv_d_cluster_result"/>
+<localVariables>
+  <variable id="IP_RUN_ID" parameter="true">
+    <descriptions defaultDescription="Filter Run ID"/>
+    <variableProperties datatype="INTEGER" length="10" scale="0" mandatory="false" defaultValue="">
+      <valueDomain type="empty"/>
+      <selection multiLine="false" type="SingleValue"/>
+      <derivationRule inputEnabled="true">
+        <resourceUri>CLUSTER_RESULT</resourceUri>
+        <resultElementName>RUN_ID</resultElementName>
+      </derivationRule>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources>
+  <DataSource id="CLUSTER_RESULT">
+    <resourceUri>CLUSTER_RESULT</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="P_CLUSTER_RESULT" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="RUN_ID"/>
+      <viewAttribute id="CUSTOMERID"/>
+      <viewAttribute id="CLUSTER_ID"/>
+      <viewAttribute id="DISTANCE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="CLUSTER_RESULT"/>
+    <filter>&quot;RUN_ID&quot; = $$IP_RUN_ID$$</filter>
+  </calculationView>
+</calculationViews>
+<logicalModel id="P_CLUSTER_RESULT">
+  <attributes>
+    <attribute id="RUN_ID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="RUN_ID"/>
+      <keyMapping columnObjectName="P_CLUSTER_RESULT" columnName="RUN_ID"/>
+    </attribute>
+    <attribute id="CUSTOMERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUSTOMERID"/>
+      <keyMapping columnObjectName="P_CLUSTER_RESULT" columnName="CUSTOMERID"/>
+    </attribute>
+    <attribute id="CLUSTER_ID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CLUSTER_ID"/>
+      <keyMapping columnObjectName="P_CLUSTER_RESULT" columnName="CLUSTER_ID"/>
+    </attribute>
+    <attribute id="DISTANCE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DISTANCE"/>
+      <keyMapping columnObjectName="P_CLUSTER_RESULT" columnName="DISTANCE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="P_CLUSTER_RESULT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
