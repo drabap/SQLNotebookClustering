@@ -82,7 +82,7 @@
       <descriptions defaultDescription="AGE"/>
       <keyMapping columnObjectName="W_AGE_MIN_MAX" columnName="AGE"/>
     </attribute>
-    <attribute id="AGE_BIN" order="2" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="AGE_BIN" order="2" displayAttribute="false" attributeHierarchyActive="false" descriptionColumnName="AGE_BIN_LABEL">
       <descriptions defaultDescription="AGE_BIN"/>
       <keyMapping columnObjectName="W_AGE_MIN_MAX" columnName="AGE_BIN"/>
     </attribute>
@@ -95,7 +95,18 @@
       <keyMapping columnObjectName="W_AGE_MIN_MAX" columnName="AGE_MAX"/>
     </attribute>
   </attributes>
-  <calculatedAttributes/>
+  <calculatedAttributes>
+    <calculatedAttribute id="AGE_BIN_PAD" order="5" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="2">
+        <formula>lpad(&quot;AGE_BIN&quot;,2,'0')</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+    <calculatedAttribute id="AGE_BIN_LABEL" order="6" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="60">
+        <formula>&quot;AGE_BIN_PAD&quot; || ' ' || &quot;AGE_MIN&quot; || ';' || ' ' || &quot;AGE_MAX&quot;</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+  </calculatedAttributes>
   <baseMeasures/>
   <calculatedMeasures/>
   <restrictedMeasures/>

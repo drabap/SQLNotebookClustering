@@ -16,9 +16,19 @@
 
   <variable id="IP_SAMPLE_PART" parameter="true">
     <descriptions defaultDescription="Share in percent for sample size"/>
-    <variableProperties datatype="DOUBLE" mandatory="false">
+    <variableProperties datatype="DOUBLE" mandatory="false" defaultExpressionLanguage="SQL" defaultValue="0.8">
       <valueDomain type="empty"/>
       <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+
+  <variable id="IV_RAND_SAMPLE">
+    <descriptions defaultDescription="Filter on Partition"/>
+    <variableProperties datatype="INTEGER" defaultValue="1">
+      <valueDomain type="AttributeValue">
+        <attribute name="RAND_SAMPLE"/>
+      </valueDomain>
+      <selection type="SingleValue"/>
     </variableProperties>
   </variable>
 </localVariables>
@@ -169,10 +179,6 @@
       <descriptions defaultDescription="CUSTOMERID"/>
       <keyMapping columnObjectName="W_RAND_SAMPLE" columnName="CUSTOMERID"/>
     </attribute>
-    <attribute id="CREDITSCORE" order="2" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="CREDITSCORE"/>
-      <keyMapping columnObjectName="W_RAND_SAMPLE" columnName="CREDITSCORE"/>
-    </attribute>
     <attribute id="GEOGRAPHY" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="GEOGRAPHY"/>
       <keyMapping columnObjectName="W_RAND_SAMPLE" columnName="GEOGRAPHY"/>
@@ -196,9 +202,20 @@
     <attribute id="CLUSTER_ID" order="12" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="CLUSTER_ID"/>
       <keyMapping columnObjectName="W_RAND_SAMPLE" columnName="CLUSTER_ID"/>
-    </attribute></attributes>
+    </attribute>
+    <attribute id="RAND_SAMPLE" order="19" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="RAND_SAMPLE"/>
+      <localVariable>IV_RAND_SAMPLE</localVariable>
+      <keyMapping columnObjectName="W_RAND_SAMPLE" columnName="RAND_SAMPLE"/>
+    </attribute>
+  </attributes>
   <calculatedAttributes/>
   <baseMeasures>
+    <measure id="CREDITSCORE" order="2" aggregationType="avg" measureType="simple">
+      <descriptions defaultDescription="CREDITSCORE"/>
+      <measureMapping columnObjectName="W_RAND_SAMPLE" columnName="CREDITSCORE"/>
+      <exceptionAggregationMetadata/>
+    </measure>
     <measure id="AGE" order="5" aggregationType="avg" measureType="simple">
       <descriptions defaultDescription="AGE"/>
       <measureMapping columnObjectName="W_RAND_SAMPLE" columnName="AGE"/>
@@ -229,13 +246,7 @@
       <descriptions defaultDescription="ROWCOUNT_CUSTOMER"/>
       <measureMapping columnObjectName="W_RAND_SAMPLE" columnName="ROWCOUNT_CUSTOMER"/>
       <exceptionAggregationMetadata/>
-    </measure>
-    <measure id="RAND_SAMPLE" order="19" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="RAND_SAMPLE"/>
-      <measureMapping columnObjectName="W_RAND_SAMPLE" columnName="RAND_SAMPLE"/>
-      <exceptionAggregationMetadata/>
-    </measure>
-  </baseMeasures>
+    </measure></baseMeasures>
   <calculatedMeasures>
     <measure id="COUNT_CUSTOMER" order="14" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT">
       <descriptions defaultDescription="COUNT_CUSTOMER"/>
@@ -295,22 +306,22 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="249.02219312145473" y="112"/>
+      <upperLeftCorner x="249" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="P_CUSTOMER" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92.00000000000004" y="501.9999976158142"/>
+      <upperLeftCorner x="92" y="501"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="P_CLUSTER_RESULT" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302.00000000000006" y="501.9999976158142"/>
+      <upperLeftCorner x="302" y="501"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="J_CUST_CLUSTER_RESULT" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="178.1968806714019" y="341.9999988079071"/>
+      <upperLeftCorner x="178" y="341"/>
       <rectangleSize height="30" width="249"/>
     </shape>
     <shape modelObjectName="P_CUSTOMER" modelObjectNameSpace="J_CUST_CLUSTER_RESULT" modelObjectType="JoinNodeInput">
@@ -322,7 +333,7 @@
       <rectangleSize width="189"/>
     </shape>
     <shape expanded="true" modelObjectName="W_RAND_SAMPLE" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="162.19688067140189" y="236.9999988079071"/>
+      <upperLeftCorner x="162" y="236"/>
       <rectangleSize height="30" width="281"/>
     </shape>
   </shapes>

@@ -70,6 +70,9 @@
       <viewAttribute id="AGE"/>
       <viewAttribute id="AGE_MIN"/>
       <viewAttribute id="AGE_MAX"/>
+    
+      <viewAttribute id="AGE_BIN_PAD"/>
+      <viewAttribute id="AGE_BIN_LABEL"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <input node="cv_d_age_binning"/>
@@ -132,6 +135,8 @@
       <viewAttribute id="DISTANCE" aggregationType="sum"/>
       <viewAttribute id="AGE_BIN"/>
       <viewAttribute id="ROWCOUNT_CUSTOMER"/>
+      <viewAttribute id="AGE_BIN_PAD"/>
+      <viewAttribute id="AGE_BIN_LABEL"/>
       <viewAttribute hidden="true" id="JOIN$AGE$AGE"/>
     </viewAttributes>
     <calculatedViewAttributes/>
@@ -154,6 +159,8 @@
     </input>
     <input node="P_AGE_BIN">
       <mapping xsi:type="Calculation:AttributeMapping" target="AGE_BIN" source="AGE_BIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AGE_BIN_PAD" source="AGE_BIN_PAD"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AGE_BIN_LABEL" source="AGE_BIN_LABEL"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$AGE$AGE" source="AGE"/>
     </input>
     <joinAttribute name="JOIN$AGE$AGE"/>
@@ -164,10 +171,6 @@
     <attribute id="CUSTOMERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="CUSTOMERID"/>
       <keyMapping columnObjectName="J_CUST_AGE_BIN" columnName="CUSTOMERID"/>
-    </attribute>
-    <attribute id="CREDITSCORE" order="2" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="CREDITSCORE"/>
-      <keyMapping columnObjectName="J_CUST_AGE_BIN" columnName="CREDITSCORE"/>
     </attribute>
     <attribute id="GEOGRAPHY" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="GEOGRAPHY"/>
@@ -197,9 +200,23 @@
       <descriptions defaultDescription="AGE_BIN"/>
       <keyMapping columnObjectName="J_CUST_AGE_BIN" columnName="AGE_BIN"/>
     </attribute>
+  
+    <attribute id="AGE_BIN_PAD" order="20" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="AGE_BIN_PAD"/>
+      <keyMapping columnObjectName="J_CUST_AGE_BIN" columnName="AGE_BIN_PAD"/>
+    </attribute>
+    <attribute id="AGE_BIN_LABEL" order="21" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="AGE_BIN_LABEL"/>
+      <keyMapping columnObjectName="J_CUST_AGE_BIN" columnName="AGE_BIN_LABEL"/>
+    </attribute>
   </attributes>
   <calculatedAttributes/>
   <baseMeasures>
+    <measure id="CREDITSCORE" order="2" aggregationType="avg" measureType="simple">
+      <descriptions defaultDescription="CREDITSCORE"/>
+      <measureMapping columnObjectName="J_CUST_AGE_BIN" columnName="CREDITSCORE"/>
+      <exceptionAggregationMetadata/>
+    </measure>
     <measure id="AGE" order="5" aggregationType="avg" measureType="simple">
       <descriptions defaultDescription="AGE"/>
       <measureMapping columnObjectName="J_CUST_AGE_BIN" columnName="AGE"/>
@@ -240,6 +257,7 @@
       <formula>1</formula>
       
       
+      
       <exceptionAggregationMetadata/>
     </measure>
   </calculatedMeasures>
@@ -254,6 +272,7 @@
       </restriction>
       
       
+      
       <exceptionAggregationMetadata/>
     </measure>
     <measure id="COUNTRY_SPAIN" order="17" aggregationType="sum" datatype="INTEGER" baseMeasure="ROWCOUNT_CUSTOMER" restrictionExpressionLanguage="SQL">
@@ -266,6 +285,7 @@
       </restriction>
       
       
+      
       <exceptionAggregationMetadata/>
     </measure>
     <measure id="COUNTRY_FRANCE" order="18" aggregationType="sum" datatype="INTEGER" baseMeasure="ROWCOUNT_CUSTOMER" restrictionExpressionLanguage="SQL">
@@ -276,6 +296,7 @@
         </filter>
         <attributeName>GEOGRAPHY</attributeName>
       </restriction>
+      
       
       
       <exceptionAggregationMetadata/>

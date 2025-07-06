@@ -27,9 +27,6 @@
   <DataSource id="cv_d_cluster_result">
     <resourceUri>cv_d_cluster_result</resourceUri>
   </DataSource>
-  <DataSource id="cv_d_age_binning">
-    <resourceUri>cv_d_age_binning</resourceUri>
-  </DataSource>
 </dataSources>
 <snapshotProcedures/>
 <calculationViews>
@@ -105,220 +102,77 @@
     </input>
     <joinAttribute name="JOIN$CUSTOMERID$CUSTOMERID"/>
   </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="J_CUST_AGE_BIN" cardinality="CN_1" joinType="referential" optimizeJoinColumns="false">
-    <viewAttributes>
-      <viewAttribute id="CUSTOMERID" aggregationType="sum"/>
-      <viewAttribute id="CREDITSCORE" aggregationType="sum"/>
-      <viewAttribute id="GEOGRAPHY"/>
-      <viewAttribute id="GENDER"/>
-      <viewAttribute id="AGE" aggregationType="sum"/>
-      <viewAttribute id="TENURE" aggregationType="sum"/>
-      <viewAttribute id="BALANCE" aggregationType="sum"/>
-      <viewAttribute id="NUMOFPRODUCTS" aggregationType="sum"/>
-      <viewAttribute id="HASCRCARD" aggregationType="sum"/>
-      <viewAttribute id="ISACTIVEMEMBER" aggregationType="sum"/>
-      <viewAttribute id="ESTIMATEDSALARY" aggregationType="sum"/>
-      <viewAttribute id="CLUSTER_ID" aggregationType="sum"/>
-      <viewAttribute id="DISTANCE" aggregationType="sum"/>
-      <viewAttribute id="AGE_BIN"/>
-      <viewAttribute id="ROWCOUNT_CUSTOMER"/>
-      <viewAttribute hidden="true" id="JOIN$AGE$AGE"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="J_CUST_CLUSTER_RESULT">
-      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMERID" source="CUSTOMERID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="CREDITSCORE" source="CREDITSCORE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="GEOGRAPHY" source="GEOGRAPHY"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="GENDER" source="GENDER"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="AGE" source="AGE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="TENURE" source="TENURE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="BALANCE" source="BALANCE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="NUMOFPRODUCTS" source="NUMOFPRODUCTS"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="HASCRCARD" source="HASCRCARD"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="ISACTIVEMEMBER" source="ISACTIVEMEMBER"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="ESTIMATEDSALARY" source="ESTIMATEDSALARY"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="CLUSTER_ID" source="CLUSTER_ID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="DISTANCE" source="DISTANCE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="ROWCOUNT_CUSTOMER" source="ROWCOUNT_CUSTOMER"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$AGE$AGE" source="AGE"/>
-    </input>
-    <input node="cv_d_age_binning">
-      <mapping xsi:type="Calculation:AttributeMapping" target="AGE_BIN" source="AGE_BIN"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$AGE$AGE" source="AGE"/>
-    </input>
-    <joinAttribute name="JOIN$AGE$AGE"/>
-  </calculationView>
-  <calculationView xsi:type="Calculation:WindowFunctionView" id="W_QUANTILE_BAL_SAL_AGE">
-    <viewAttributes>
-      <viewAttribute id="CUSTOMERID" aggregationType="sum"/>
-      <viewAttribute id="BALANCE" aggregationType="sum"/>
-      <viewAttribute id="AGE" aggregationType="sum"/>
-      <viewAttribute id="ESTIMATEDSALARY" aggregationType="sum"/>
-      <viewAttribute id="CLUSTER_ID" aggregationType="sum"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="J_CUST_CLUSTER_RESULT">
-      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMERID" source="CUSTOMERID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="BALANCE" source="BALANCE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="AGE" source="AGE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="ESTIMATEDSALARY" source="ESTIMATEDSALARY"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="CLUSTER_ID" source="CLUSTER_ID"/>
-    </input>
-    <functions>
-      <function name="PERCENTILE_CONT">
-        <arguments>
-          <argument>0.25</argument>
-        </arguments>
-        <resultColumn datatype="DOUBLE">BALANCE_25_PERCENTILE</resultColumn>
-      </function>
-      <function name="PERCENTILE_CONT">
-        <arguments>
-          <argument>0.75</argument>
-        </arguments>
-        <resultColumn datatype="DOUBLE">BALANCE_75_PERCENTILE</resultColumn>
-      </function>
-    </functions>
-    <orderAttributes>
-      <orderAttribute direction="ASC">BALANCE</orderAttribute>
-    </orderAttributes>
-    <partitionAttributes>
-      <partitionAttribute>CLUSTER_ID</partitionAttribute>
-    </partitionAttributes>
-  </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="J_CUST_QUANT_BAL" cardinality="CN_1" joinType="inner">
-    <viewAttributes>
-      <viewAttribute id="CUSTOMERID" aggregationType="sum"/>
-      <viewAttribute id="CREDITSCORE" aggregationType="sum"/>
-      <viewAttribute id="GEOGRAPHY"/>
-      <viewAttribute id="GENDER"/>
-      <viewAttribute id="AGE" aggregationType="sum"/>
-      <viewAttribute id="TENURE" aggregationType="sum"/>
-      <viewAttribute id="BALANCE" aggregationType="sum"/>
-      <viewAttribute id="NUMOFPRODUCTS" aggregationType="sum"/>
-      <viewAttribute id="HASCRCARD" aggregationType="sum"/>
-      <viewAttribute id="ISACTIVEMEMBER" aggregationType="sum"/>
-      <viewAttribute id="ESTIMATEDSALARY" aggregationType="sum"/>
-      <viewAttribute id="CLUSTER_ID" aggregationType="sum"/>
-      <viewAttribute id="DISTANCE" aggregationType="sum"/>
-      <viewAttribute id="AGE_BIN" aggregationType="sum"/>
-      <viewAttribute id="ROWCOUNT_CUSTOMER" aggregationType="sum"/>
-      <viewAttribute id="BALANCE_25_PERCENTILE" aggregationType="sum"/>
-      <viewAttribute id="BALANCE_75_PERCENTILE" aggregationType="sum"/>
-      <viewAttribute hidden="true" id="JOIN$CUSTOMERID$CUSTOMERID"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="J_CUST_AGE_BIN">
-      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMERID" source="CUSTOMERID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="CREDITSCORE" source="CREDITSCORE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="GEOGRAPHY" source="GEOGRAPHY"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="GENDER" source="GENDER"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="AGE" source="AGE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="TENURE" source="TENURE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="BALANCE" source="BALANCE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="NUMOFPRODUCTS" source="NUMOFPRODUCTS"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="HASCRCARD" source="HASCRCARD"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="ISACTIVEMEMBER" source="ISACTIVEMEMBER"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="ESTIMATEDSALARY" source="ESTIMATEDSALARY"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="CLUSTER_ID" source="CLUSTER_ID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="DISTANCE" source="DISTANCE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="AGE_BIN" source="AGE_BIN"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="ROWCOUNT_CUSTOMER" source="ROWCOUNT_CUSTOMER"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CUSTOMERID$CUSTOMERID" source="CUSTOMERID"/>
-    </input>
-    <input node="W_QUANTILE_BAL_SAL_AGE">
-      <mapping xsi:type="Calculation:AttributeMapping" target="BALANCE_25_PERCENTILE" source="BALANCE_25_PERCENTILE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="BALANCE_75_PERCENTILE" source="BALANCE_75_PERCENTILE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CUSTOMERID$CUSTOMERID" source="CUSTOMERID"/>
-    </input>
-    <joinAttribute name="JOIN$CUSTOMERID$CUSTOMERID"/>
-  </calculationView>
 </calculationViews>
-<logicalModel id="J_CUST_QUANT_BAL">
+<logicalModel id="J_CUST_CLUSTER_RESULT">
   <attributes>
     <attribute id="CUSTOMERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="CUSTOMERID"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="CUSTOMERID"/>
-    </attribute>
-    <attribute id="CREDITSCORE" order="2" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="CREDITSCORE"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="CREDITSCORE"/>
+      <keyMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="CUSTOMERID"/>
     </attribute>
     <attribute id="GEOGRAPHY" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="GEOGRAPHY"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="GEOGRAPHY"/>
+      <keyMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="GEOGRAPHY"/>
     </attribute>
     <attribute id="GENDER" order="4" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="GENDER"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="GENDER"/>
+      <keyMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="GENDER"/>
     </attribute>
     <attribute id="NUMOFPRODUCTS" order="8" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="NUMOFPRODUCTS"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="NUMOFPRODUCTS"/>
+      <keyMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="NUMOFPRODUCTS"/>
     </attribute>
     <attribute id="HASCRCARD" order="9" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="HASCRCARD"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="HASCRCARD"/>
+      <keyMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="HASCRCARD"/>
     </attribute>
     <attribute id="ISACTIVEMEMBER" order="10" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ISACTIVEMEMBER"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="ISACTIVEMEMBER"/>
+      <keyMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="ISACTIVEMEMBER"/>
     </attribute>
     <attribute id="CLUSTER_ID" order="12" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="CLUSTER_ID"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="CLUSTER_ID"/>
-    </attribute>
-    <attribute id="AGE_BIN" order="14" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="AGE_BIN"/>
-      <keyMapping columnObjectName="J_CUST_QUANT_BAL" columnName="AGE_BIN"/>
-    </attribute>
-  </attributes>
+      <keyMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="CLUSTER_ID"/>
+    </attribute></attributes>
   <calculatedAttributes/>
   <baseMeasures>
+    <measure id="CREDITSCORE" order="2" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="CREDITSCORE"/>
+      <measureMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="CREDITSCORE"/>
+      <exceptionAggregationMetadata/>
+    </measure>
     <measure id="AGE" order="5" aggregationType="avg" measureType="simple">
       <descriptions defaultDescription="AGE"/>
-      <measureMapping columnObjectName="J_CUST_QUANT_BAL" columnName="AGE"/>
+      <measureMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="AGE"/>
       <exceptionAggregationMetadata/>
     </measure>
     <measure id="TENURE" order="6" aggregationType="avg" measureType="simple">
       <descriptions defaultDescription="TENURE"/>
-      <measureMapping columnObjectName="J_CUST_QUANT_BAL" columnName="TENURE"/>
+      <measureMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="TENURE"/>
       <exceptionAggregationMetadata/>
     </measure>
     <measure id="BALANCE" order="7" aggregationType="avg" measureType="simple">
       <descriptions defaultDescription="BALANCE"/>
-      <measureMapping columnObjectName="J_CUST_QUANT_BAL" columnName="BALANCE"/>
+      <measureMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="BALANCE"/>
       <exceptionAggregationMetadata/>
     </measure>
     <measure id="ESTIMATEDSALARY" order="11" aggregationType="avg" measureType="simple">
       <descriptions defaultDescription="ESTIMATEDSALARY"/>
-      <measureMapping columnObjectName="J_CUST_QUANT_BAL" columnName="ESTIMATEDSALARY"/>
+      <measureMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="ESTIMATEDSALARY"/>
       <exceptionAggregationMetadata/>
     </measure>
     <measure id="DISTANCE" order="13" aggregationType="avg" measureType="simple">
       <descriptions defaultDescription="DISTANCE"/>
-      <measureMapping columnObjectName="J_CUST_QUANT_BAL" columnName="DISTANCE"/>
+      <measureMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="DISTANCE"/>
       <exceptionAggregationMetadata/>
     </measure>
   
-    <measure id="ROWCOUNT_CUSTOMER" order="19" aggregationType="sum" measureType="simple">
+    <measure id="ROWCOUNT_CUSTOMER" order="18" aggregationType="sum" measureType="simple">
       <descriptions defaultDescription="ROWCOUNT_CUSTOMER"/>
-      <measureMapping columnObjectName="J_CUST_QUANT_BAL" columnName="ROWCOUNT_CUSTOMER"/>
+      <measureMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="ROWCOUNT_CUSTOMER"/>
       <exceptionAggregationMetadata/>
-    </measure>
-  
-    <measure id="BALANCE_25_PERCENTILE" order="20" aggregationType="min" measureType="simple">
-      <descriptions defaultDescription="BALANCE_25_PERCENTILE"/>
-      <measureMapping columnObjectName="J_CUST_QUANT_BAL" columnName="BALANCE_25_PERCENTILE"/>
-      <exceptionAggregationMetadata/>
-    </measure>
-    <measure id="BALANCE_75_PERCENTILE" order="21" aggregationType="min" measureType="simple">
-      <descriptions defaultDescription="BALANCE_75_PERCENTILE"/>
-      <measureMapping columnObjectName="J_CUST_QUANT_BAL" columnName="BALANCE_75_PERCENTILE"/>
-      <exceptionAggregationMetadata/>
-    </measure>
-  </baseMeasures>
+    </measure></baseMeasures>
   <calculatedMeasures>
-    <measure id="COUNT_CUSTOMER" order="15" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT">
+    <measure id="COUNT_CUSTOMER" order="14" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT">
       <descriptions defaultDescription="COUNT_CUSTOMER"/>
       <exceptionAggregation>
         <attribute attributeName="CUSTOMERID"/>
@@ -326,11 +180,12 @@
       <formula>1</formula>
       
       
+      
       <exceptionAggregationMetadata/>
     </measure>
   </calculatedMeasures>
   <restrictedMeasures>
-    <measure id="COUNTRY_GERMANY" order="16" aggregationType="sum" datatype="INTEGER" baseMeasure="ROWCOUNT_CUSTOMER" restrictionExpressionLanguage="SQL">
+    <measure id="COUNTRY_GERMANY" order="15" aggregationType="sum" datatype="INTEGER" baseMeasure="ROWCOUNT_CUSTOMER" restrictionExpressionLanguage="SQL">
       <descriptions defaultDescription=""/>
       <restriction logicalOperator="AND">
         <filter xsi:type="Privilege:AttributeFilter" attributeName="GEOGRAPHY" datatype="NVARCHAR">
@@ -340,9 +195,10 @@
       </restriction>
       
       
+      
       <exceptionAggregationMetadata/>
     </measure>
-    <measure id="COUNTRY_SPAIN" order="17" aggregationType="sum" datatype="INTEGER" baseMeasure="ROWCOUNT_CUSTOMER" restrictionExpressionLanguage="SQL">
+    <measure id="COUNTRY_SPAIN" order="16" aggregationType="sum" datatype="INTEGER" baseMeasure="ROWCOUNT_CUSTOMER" restrictionExpressionLanguage="SQL">
       <descriptions defaultDescription=""/>
       <restriction logicalOperator="AND">
         <filter xsi:type="Privilege:AttributeFilter" attributeName="GEOGRAPHY" datatype="NVARCHAR">
@@ -352,9 +208,10 @@
       </restriction>
       
       
+      
       <exceptionAggregationMetadata/>
     </measure>
-    <measure id="COUNTRY_FRANCE" order="18" aggregationType="sum" datatype="INTEGER" baseMeasure="ROWCOUNT_CUSTOMER" restrictionExpressionLanguage="SQL">
+    <measure id="COUNTRY_FRANCE" order="17" aggregationType="sum" datatype="INTEGER" baseMeasure="ROWCOUNT_CUSTOMER" restrictionExpressionLanguage="SQL">
       <descriptions defaultDescription=""/>
       <restriction logicalOperator="AND">
         <filter xsi:type="Privilege:AttributeFilter" attributeName="GEOGRAPHY" datatype="NVARCHAR">
@@ -362,6 +219,7 @@
         </filter>
         <attributeName>GEOGRAPHY</attributeName>
       </restriction>
+      
       
       
       <exceptionAggregationMetadata/>
@@ -372,21 +230,21 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="335" y="112"/>
+      <upperLeftCorner x="227.39756855391985" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="P_CUSTOMER" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="172" y="696"/>
+      <upperLeftCorner x="91.99999999999994" y="376.9999988079071"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="P_CLUSTER_RESULT" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="382" y="696"/>
+      <upperLeftCorner x="301.99999999999994" y="376.9999988079071"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="J_CUST_CLUSTER_RESULT" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="296" y="536"/>
+      <upperLeftCorner x="182.89756855391983" y="217"/>
       <rectangleSize height="30" width="249"/>
     </shape>
     <shape modelObjectName="P_CUSTOMER" modelObjectNameSpace="J_CUST_CLUSTER_RESULT" modelObjectType="JoinNodeInput">
@@ -396,36 +254,6 @@
     <shape modelObjectName="P_CLUSTER_RESULT" modelObjectNameSpace="J_CUST_CLUSTER_RESULT" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
       <rectangleSize width="189"/>
-    </shape>
-    <shape expanded="true" modelObjectName="J_CUST_AGE_BIN" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="387" y="376"/>
-      <rectangleSize height="30" width="256"/>
-    </shape>
-    <shape modelObjectName="J_CUST_CLUSTER_RESULT" modelObjectNameSpace="J_CUST_AGE_BIN" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="16" y="16"/>
-      <rectangleSize width="227"/>
-    </shape>
-    <shape modelObjectName="cv_d_age_binning" modelObjectNameSpace="J_CUST_AGE_BIN" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="307" y="96"/>
-      <rectangleSize width="168"/>
-    </shape>
-  
-    <shape expanded="true" modelObjectName="W_QUANTILE_BAL_SAL_AGE" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="91" y="394"/>
-      <rectangleSize height="30" width="246"/>
-    </shape>
-    <shape expanded="true" modelObjectName="J_CUST_QUANT_BAL" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="335" y="217"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape modelObjectName="J_CUST_AGE_BIN" modelObjectNameSpace="J_CUST_QUANT_BAL" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="250"/>
-    </shape>
-    <shape modelObjectName="W_QUANTILE_BAL_SAL_AGE" modelObjectNameSpace="J_CUST_QUANT_BAL" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="238"/>
-    </shape>
-  </shapes>
+    </shape></shapes>
 </layout>
 </Calculation:scenario>
