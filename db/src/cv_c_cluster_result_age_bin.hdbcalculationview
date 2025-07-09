@@ -203,7 +203,9 @@
   
     <attribute id="AGE_BIN_PAD" order="20" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="AGE_BIN_PAD"/>
+  
       <keyMapping columnObjectName="J_CUST_AGE_BIN" columnName="AGE_BIN_PAD"/>
+  
     </attribute>
     <attribute id="AGE_BIN_LABEL" order="21" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="AGE_BIN_LABEL"/>

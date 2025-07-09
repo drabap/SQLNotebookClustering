@@ -135,7 +135,7 @@
     </attribute></attributes>
   <calculatedAttributes/>
   <baseMeasures>
-    <measure id="CREDITSCORE" order="2" aggregationType="sum" measureType="simple">
+    <measure id="CREDITSCORE" order="2" aggregationType="avg" measureType="simple">
       <descriptions defaultDescription="CREDITSCORE"/>
       <measureMapping columnObjectName="J_CUST_CLUSTER_RESULT" columnName="CREDITSCORE"/>
       <exceptionAggregationMetadata/>
@@ -230,21 +230,21 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="227.39756855391985" y="112"/>
+      <upperLeftCorner x="227" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="P_CUSTOMER" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="91.99999999999994" y="376.9999988079071"/>
+      <upperLeftCorner x="91" y="376"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="P_CLUSTER_RESULT" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="301.99999999999994" y="376.9999988079071"/>
-      <rectangleSize height="30" width="160"/>
+      <upperLeftCorner x="301" y="376"/>
+      <rectangleSize height="30" width="254"/>
     </shape>
     <shape expanded="true" modelObjectName="J_CUST_CLUSTER_RESULT" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="182.89756855391983" y="217"/>
+      <upperLeftCorner x="182" y="217"/>
       <rectangleSize height="30" width="249"/>
     </shape>
     <shape modelObjectName="P_CUSTOMER" modelObjectNameSpace="J_CUST_CLUSTER_RESULT" modelObjectType="JoinNodeInput">

@@ -100,12 +100,12 @@
       <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="2">
         <formula>lpad(&quot;AGE_BIN&quot;,2,'0')</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
     <calculatedAttribute id="AGE_BIN_LABEL" order="6" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="60">
-        <formula>&quot;AGE_BIN_PAD&quot; || ' ' || &quot;AGE_MIN&quot; || ';' || ' ' || &quot;AGE_MAX&quot;</formula>
+        <formula> ' ('  ||  &quot;AGE_MIN&quot; ||  ';'  ||  &quot;AGE_MAX&quot; || ') '</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
   </calculatedAttributes>
   <baseMeasures/>
   <calculatedMeasures/>
